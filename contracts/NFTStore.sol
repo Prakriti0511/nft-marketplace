@@ -2,7 +2,7 @@
 pragma solidity ^0.8.27;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721//extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 contract NFTStore is ERC721URIStorage{
     address payable public marketplaceOwner;
@@ -35,7 +35,7 @@ contract NFTStore is ERC721URIStorage{
         return currentTokenId;
     }
 
-    function getNFTListing(uint256 _tokenId) public view returns(NFTLisitng memory){
+    function getNFTListing(uint256 _tokenId) public view returns(NFTListing memory){
         return tokenIdToListing[_tokenId];
     }
 
@@ -52,7 +52,7 @@ contract NFTStore is ERC721URIStorage{
     }
 
     function createNFTListing(uint256 _tokenId, uint256 _price) private{
-        tokenIdToListing[_tokenId] = NFTLisitng({
+        tokenIdToListing[_tokenId] = NFTListing({
             tokenId : _tokenId,
             owner : payable(msg.sender),
             seller: payable(msg.sender),
@@ -64,6 +64,52 @@ contract NFTStore is ERC721URIStorage{
         NFTListing storage listing = tokenIdToListing[tokenId];
         uint256 price = listing.price;
         address payable seller = listing.seller;
+
         require(msg.value==price, "Please submit the asking price to complete the purchase");
+
+        listing.seller = payable(msg.sender);
+        totalItemsSold++;
+
+        _transfer(listing.owner, msg.sender, tokenId);
+
+        uint256 listingFee = (price*listingFeePercent) / 100;
+        marketplaceOwner.transfer(listingFee);
+        seller.transfer(msg.value - listingFee);
     }
-}
+
+    function getAllListedNFTs() public view returns (NFTListing[] memory){
+        uint256 totalNFTCount = currentTokenId;
+        NFTListing[] memory listedNFTs = new NFTListing[](totalNFTCount);
+        uint256 currentIndex = 0;
+
+        for(uint256 i = 0; i<totalNFTCount; i++){
+            uint256 tokenId = i+1;
+            NFTListing storage listing = tokenIdToListing[tokenId];
+            listedNFTs[currentIndex] = listing;
+            currentIndex += 1;
+        }
+        return listedNFTs;
+    }
+
+    function getMyNFTs() public view returns(NFTListing[] memory){
+        uint256 totalNFTCount = currentTokenId;
+        uint256 myNFTCount = 0;
+        uint256 currentIndex = 0;
+
+        for(uint256 i = 0; i<totalNFTCount; i++){
+            if(tokenIdToListing[i+1].owner == msg.sender || tokenIdToListing[i+1].seller == msg.sender){
+                myNFTCount++;
+            }
+        }
+        NFTListing[] memory myNFTs = new NFTListing[](myNFTCount);
+        for(uint256 i = 0; i<totalNFTCount; i++){
+            if(tokenIdToListing[i+1].owner == msg.sender || tokenIdToListing[i+1].seller == msg.sender){
+                uint256 tokenId = i+1;
+                NFTListing storage listing = tokenIdToListing[tokenId];
+                myNFTs[currentIndex] = listing;
+                currentIndex++;
+        }
+          
+        return myNFTs;
+    }
+}}
