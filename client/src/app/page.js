@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
-import Header from "./components/Header/Header";
+import Header from "./components/header/Header";
 import styles from "./page.module.css";
-import Footer from "./components/Footer/Footer";
+import Footer from "./components/footer/Footer";
 import Link from "next/link";
 export default function HomePage() {
   return (
@@ -30,7 +30,7 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-        <Image src="/pic1.png" alt="NFTs" width={1075} height={650} />
+        <Image src="/Designer.jpeg" alt="NFTs" width={400} height={400} />
       </div>
       <Footer />
     </div>

@@ -24,6 +24,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
+    font-size: 20px;
   }
   
   .navLinks li {
@@ -47,7 +48,7 @@
   
   .ctaBtn {
     border: none;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 600;
     padding: 8px 16px;
     border-radius: 5px;
