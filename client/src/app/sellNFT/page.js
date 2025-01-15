@@ -28,7 +28,7 @@ export default function SellNFT() {
       const data = new FormData();
       data.set("file", file);
       setBtn(false);
-      updateMessage("Uploading image... Please don't click anything!");
+      updateMessage("Uploading image... Please don&apos;t click anything!");
       const response = await uploadFileToIPFS(data);
       if (response.success === true) {
         setBtn(true);
@@ -70,7 +70,7 @@ export default function SellNFT() {
       const metadataURL = await uploadMetadataToIPFS();
       if (metadataURL === -1) return;
 
-      updateMessage("Uploading NFT...Please dont click anythying!");
+      updateMessage("Uploading NFT... Please don&apos;t click anything!");
 
       let contract = new ethers.Contract(
         marketplace.address,

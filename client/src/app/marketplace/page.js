@@ -1,6 +1,6 @@
 "use client";
 import { WalletContext } from "@/context/wallet";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import MarketplaceJson from "../marketplace.json";
 import styles from "./marketplace.module.css";
@@ -13,7 +13,8 @@ export default function Marketplace() {
   const [items, setItems] = useState();
   const { isConnected, signer } = useContext(WalletContext);
 
-  async function getNFTitems() {
+  // UseCallback to stabilize `getNFTitems` reference
+  const getNFTitems = useCallback(async () => {
     const itemsArray = [];
     if (!signer) return;
     let contract = new ethers.Contract(
@@ -43,7 +44,7 @@ export default function Marketplace() {
       itemsArray.push(item);
     }
     return itemsArray;
-  }
+  }, [signer]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,7 +57,7 @@ export default function Marketplace() {
     };
 
     fetchData();
-  }, [isConnected]);
+  }, [isConnected, getNFTitems]); // Add getNFTitems to the dependency array
 
   return (
     <div className={styles.container}>
@@ -79,7 +80,9 @@ export default function Marketplace() {
               </div>
             </>
           ) : (
-            <div className={styles.notConnected}>You are not connected...</div>
+            <div className={styles.notConnected}>
+              You are not connected...
+            </div>
           )}
         </div>
       </div>

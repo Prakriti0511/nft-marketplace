@@ -4,6 +4,7 @@ import Header from "./components/header/Header";
 import styles from "./page.module.css";
 import Footer from "./components/footer/Footer";
 import Link from "next/link";
+
 export default function HomePage() {
   return (
     <div className={styles.container}>
@@ -15,8 +16,8 @@ export default function HomePage() {
           </h1>
           <p className={styles.description}>
             Enter the nexus of creativity and innovation at NFTstore. Uncover a
-            realm of digital marvels, and together, let's redefine the future of
-            collectibles.
+            realm of digital marvels, and together, let&apos;s redefine the future
+            of collectibles.
           </p>
           <div className={styles.btns}>
             <Link
@@ -30,7 +31,13 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-        <Image src="/Designer.jpeg" alt="NFTs" width={400} height={400} />
+        <Image
+          src="/Designer.jpeg"
+          alt="NFTs"
+          width={400}
+          height={400}
+          priority
+        />
       </div>
       <Footer />
     </div>

@@ -1,6 +1,6 @@
 "use client";
 import { WalletContext } from "@/context/wallet";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import MarketplaceJson from "../marketplace.json";
 import styles from "./profile.module.css";
@@ -14,10 +14,11 @@ export default function Profile() {
   const [totalPrice, setTotalPrice] = useState("0");
   const { isConnected, userAddress, signer } = useContext(WalletContext);
 
-  async function getNFTitems() {
+  const getNFTitems = useCallback(async () => {
     let sumPrice = 0;
     const itemsArray = [];
-    if (!signer) return;
+    if (!signer) return { itemsArray, sumPrice };
+
     let contract = new ethers.Contract(
       MarketplaceJson.address,
       MarketplaceJson.abi,
@@ -45,8 +46,9 @@ export default function Profile() {
       itemsArray.push(item);
       sumPrice += Number(price);
     }
+
     return { itemsArray, sumPrice };
-  }
+  }, [signer]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,7 +62,7 @@ export default function Profile() {
     };
 
     fetchData();
-  }, [isConnected]);
+  }, [isConnected, getNFTitems]);
 
   return (
     <div className={styles.container}>
@@ -92,7 +94,7 @@ export default function Profile() {
                     ))}
                   </div>
                 ) : (
-                  <div className={styles.noNFT}>You don't have any NFT...</div>
+                  <div className={styles.noNFT}>You don&apos;t have any NFT...</div>
                 )}
               </div>
             </>
