@@ -1,8 +1,10 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-    images: {
-        domains: ["ipfs.io", "gateway.pinata.cloud"],
-    },
+export default {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'your-image-domain.com',
+      },
+    ],
+  },
 };
-
-export default nextConfig;

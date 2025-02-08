@@ -11,9 +11,9 @@ export default function HomePage() {
       <Header />
       <div className={styles.hero}>
         <div>
-          <h1 className={styles.heading}>
-            Where Art Meets Innovation, Step into NFTstore!
-          </h1>
+          <div className={styles.heading}>
+            <h1>Where Art Meets Innovation, Step into NFTstore!</h1>
+          </div>
           <p className={styles.description}>
             Enter the nexus of creativity and innovation at NFTstore. Uncover a
             realm of digital marvels, and together, let&apos;s redefine the future

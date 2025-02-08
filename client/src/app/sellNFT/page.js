@@ -70,7 +70,7 @@ export default function SellNFT() {
       const metadataURL = await uploadMetadataToIPFS();
       if (metadataURL === -1) return;
 
-      updateMessage("Uploading NFT... Please don&apos;t click anything!");
+      updateMessage("Uploading NFT... Please don't click anything!");
 
       let contract = new ethers.Contract(
         marketplace.address,
